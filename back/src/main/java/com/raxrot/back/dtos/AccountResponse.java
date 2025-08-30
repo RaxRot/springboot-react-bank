@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountResponse{
+    private Long id;
     private CurrencyType currencyType;
     private BigDecimal balance;
     private String iban;
