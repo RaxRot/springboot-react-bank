@@ -15,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -44,6 +46,42 @@ public class AccountServiceImpl implements AccountService {
         account.setSwiftCode("RAXBANK");
         Account savedAccount=accountRepository.save(account);
         return modelMapper.map(savedAccount, AccountResponse.class);
+    }
+
+    @Override
+    public List<AccountResponse> getAllAccounts() {
+        User me=authUtil.loggedInUser();
+        List<Account>accounts=accountRepository.findByUser_UserId(me.getUserId());
+        List<AccountResponse>accountResponses=accounts.stream()
+                .map(account->modelMapper.map(account, AccountResponse.class))
+                .collect(Collectors.toList());
+        return accountResponses;
+    }
+
+    @Override
+    public AccountResponse getAccount(Long accountId) {
+        User me=authUtil.loggedInUser();
+        Account account=accountRepository.findById(accountId)
+                .orElseThrow(()->new ApiException("Account not found", HttpStatus.NOT_FOUND));
+        if (!account.getUser().getUserId().equals(me.getUserId())) {
+            throw new ApiException("Access denied", HttpStatus.FORBIDDEN);
+        }
+        AccountResponse accountResponse=modelMapper.map(account, AccountResponse.class);
+        return accountResponse;
+    }
+
+    @Override
+    public void deleteAccount(Long accountId) {
+        User me=authUtil.loggedInUser();
+        Account account=accountRepository.findById(accountId)
+                .orElseThrow(()->new ApiException("Account not found", HttpStatus.NOT_FOUND));
+        if (!account.getUser().getUserId().equals(me.getUserId())) {
+            throw new ApiException("Access denied", HttpStatus.FORBIDDEN);
+        }
+        if (account.getBalance().compareTo(BigDecimal.ZERO) > 0) {
+            throw new ApiException("Balance exceeded", HttpStatus.BAD_REQUEST);
+        }
+        accountRepository.delete(account);
     }
 
     private String generateIban(AccountRequest accountRequest) {
