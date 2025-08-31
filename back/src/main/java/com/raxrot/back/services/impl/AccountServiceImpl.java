@@ -1,4 +1,4 @@
-package com.raxrot.back.services;
+package com.raxrot.back.services.impl;
 
 import com.raxrot.back.dtos.AccountRequest;
 import com.raxrot.back.dtos.AccountResponse;
@@ -8,6 +8,7 @@ import com.raxrot.back.models.AppRole;
 import com.raxrot.back.models.CurrencyType;
 import com.raxrot.back.models.User;
 import com.raxrot.back.repositories.AccountRepository;
+import com.raxrot.back.services.AccountService;
 import com.raxrot.back.utils.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
