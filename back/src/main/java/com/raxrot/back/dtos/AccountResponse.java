@@ -18,6 +18,8 @@ public class AccountResponse{
     private BigDecimal balance;
     private String iban;
     private String swiftCode;
+    private String ownerUsername;
+    private String ownerEmail;
 
     public AccountResponse(CurrencyType currencyType, BigDecimal balance, String iban, String swiftCode) {
     }
