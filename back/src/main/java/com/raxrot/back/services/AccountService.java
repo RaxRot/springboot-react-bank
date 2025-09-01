@@ -10,4 +10,5 @@ public interface AccountService {
     List<AccountResponse> getAllAccounts();
     AccountResponse getAccount(Long accountId);
     void deleteAccount(Long accountId);
+    AccountResponse getAccountByIban(String iban);
 }

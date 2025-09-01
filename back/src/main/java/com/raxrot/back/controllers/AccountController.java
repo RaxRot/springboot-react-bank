@@ -40,4 +40,10 @@ public class AccountController {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/iban/{iban}")
+    public ResponseEntity<AccountResponse> getAccountByIban(@PathVariable String iban) {
+        AccountResponse accountResponse = accountService.getAccountByIban(iban);
+        return ResponseEntity.ok(accountResponse);
+    }
 }

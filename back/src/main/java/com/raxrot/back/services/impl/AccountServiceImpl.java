@@ -106,4 +106,11 @@ public class AccountServiceImpl implements AccountService {
             default -> "XX";
         };
     }
+
+    @Override
+    public AccountResponse getAccountByIban(String iban) {
+        Account account = accountRepository.findByIban(iban)
+                .orElseThrow(() -> new ApiException("Account not found with IBAN " + iban, HttpStatus.NOT_FOUND));
+        return modelMapper.map(account, AccountResponse.class);
+    }
 }
