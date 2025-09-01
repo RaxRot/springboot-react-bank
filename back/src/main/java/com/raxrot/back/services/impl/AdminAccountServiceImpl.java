@@ -39,7 +39,12 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         Page<Account> accounts = accountRepository.findAll(pageDetails);
 
         List<AccountResponse> content = accounts.getContent().stream()
-                .map(acc -> modelMapper.map(acc, AccountResponse.class))
+                .map(acc -> {
+                    AccountResponse dto = modelMapper.map(acc, AccountResponse.class);
+                    dto.setOwnerUsername(acc.getUser().getUserName());
+                    dto.setOwnerEmail(acc.getUser().getEmail());
+                    return dto;
+                })
                 .toList();
 
         AccountPageResponse resp = new AccountPageResponse();
@@ -57,8 +62,13 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         User user=userRepository.findById(userId)
                 .orElseThrow(()-> new ApiException("User not found", HttpStatus.NOT_FOUND));
         List<Account>accounts=accountRepository.findByUser_UserId(userId);
-        List<AccountResponse> accountResponses=accounts.stream()
-                .map(account->modelMapper.map(account, AccountResponse.class))
+        List<AccountResponse> accountResponses = accounts.stream()
+                .map(acc -> {
+                    AccountResponse dto = modelMapper.map(acc, AccountResponse.class);
+                    dto.setOwnerUsername(acc.getUser().getUserName());
+                    dto.setOwnerEmail(acc.getUser().getEmail());
+                    return dto;
+                })
                 .collect(Collectors.toList());
         return accountResponses;
     }

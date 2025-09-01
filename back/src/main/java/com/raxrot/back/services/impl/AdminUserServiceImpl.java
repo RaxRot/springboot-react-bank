@@ -69,6 +69,8 @@ public class AdminUserServiceImpl implements AdminUserService {
                     dto.setBalance(acc.getBalance());
                     dto.setIban(acc.getIban());
                     dto.setSwiftCode(acc.getSwiftCode());
+                    dto.setOwnerUsername(user.getUserName());
+                    dto.setOwnerEmail(user.getEmail());
                     return dto;
                 })
                 .toList();
@@ -83,6 +85,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         resp.setEmail(user.getEmail());
         resp.setRoles(roles);
         resp.setAccounts(accounts);
+
         return resp;
     }
 
