@@ -21,7 +21,7 @@ public class AdminUserController {
     public ResponseEntity<AdminUserPageResponse> getAlUsers(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_ACCOUNTS_BY, required = false) String sortBy,
+            @RequestParam(name="sortBy", defaultValue = AppConstants.SORT_USERS_BY) String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder) {
 
         AdminUserPageResponse adminUserResponse =
